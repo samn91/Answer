@@ -1,0 +1,88 @@
+﻿@model Answer.Models.QuestionModels
+
+@{
+    ViewBag.Title = "Q: " + Model.Title;
+}
+
+<h2>@Model.Title</h2>
+
+<fieldset>
+    
+    <legend>Question</legend>
+   
+    <div class="display-field" style="box-shadow: 0 0 5px black;border-radius: 2px 2px 2px 2px;min-height:100px;padding:5px;margin:2px;background-color:white">
+        @Html.DisplayFor(model => model.Text)
+    </div>
+
+     <div class="display-field">
+          Ask By: @Html.DisplayFor(model => model.User.UserName) |
+          Time:  @Html.DisplayFor(model => model.Date)  |
+          Views:  @Html.DisplayFor(model => model.Views) 
+        </div>
+</fieldset>
+<p>
+      @if (User.Identity.Name == Model.User.UserName)
+      {
+          @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionId });
+         @Html.ActionLink("Delete", "Delete", new { id = Model.QuestionId });
+      }
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+       <div style="margin: 0 50px;">
+            @*@for (int i = Model.Answers.Count - 1; i >= 0; i--) { }*@
+            @{ var list=Model.Answers.OrderByDescending(o => o.Rate.Count);
+               int i=0;
+                 foreach(var item in list)
+                {
+                     using (@Html.BeginForm("RateAnswer", "Question"))
+                     {
+                        //var item = Model.Answers[i];
+                        @Html.Hidden("QId",item.Question.QuestionId)
+                        @Html.Hidden("AId",item.AnswerId)
+                        <div style="padding:2px;@(i++==0&&item.Rate.Count!=0?"border:dashed 3px green;box-shadow: 0 0 5px black;margin-bottom: 15px;":"")">
+                             <div class="display-field" style="box-shadow: 0 0 5px black;border-radius: 2px 2px 2px 2px;min-height:50px;padding:5px;margin:2px;background-color:white">@item.AnswerText   
+                             <div  style="border:solid 2px #808080;box-shadow:inset 0 0 5px black;border-radius: 5px 5px 5px 5px;padding:5px;min-height:20px;text-align:center;float:right"> By  @item.User.UserName | Rate: @item.Rate.Count <br />  @item.Date </div>  
+                             @if (User.Identity.Name != item.User.UserName&&item.Rate.Find(r=>r.User.UserName==User.Identity.Name)==null){<div style="float:right"><input type="submit" value="Rate" /></div>}
+                             @if (User.Identity.Name == item.User.UserName){ @Html.ActionLink("Remove", "RemoveAnswer", new { QId=item.Question.QuestionId,AId = item.AnswerId}) }
+                            </div>
+                        Answered By: @item.User.UserName | Time: @item.Date.ToShortDateString() | Rate: @item.Rate.Count
+                       </div>
+                     }
+                }
+            }
+    </div>
+<div>
+    @Html.Partial("_Answer", new Answer.Models.AnswerModels() {Question=Model})
+    @*@using (@Html.BeginForm("Answer", "Question"))
+    {   @Html.ValidationSummary(true)
+        @Html.TextArea("AnswerText")
+        @Html.ValidationMessage("AnswerText")
+        @Html.Hidden("QId",Model.QuestionId)
+        <br />
+        <input type="submit" value="Answer" />
+    }*@
+</div>
+
+@*
+@section Scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $('.post-Answer').on("click", function () {
+            var form = $(this).parent("form");
+            $.ajax({
+                url: "POST",
+                type: form.attr("action"),
+                data: form.serialize()
+            })
+                   .success(function (result) {
+                       $('.AllAnswer').replaceWith(result);
+                   })
+        });
+        return false;
+    });
+</script>
+}
+
+*@

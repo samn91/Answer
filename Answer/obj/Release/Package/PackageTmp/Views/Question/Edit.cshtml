@@ -1,0 +1,91 @@
+﻿@model Answer.Models.QuestionModels
+
+@{
+    ViewBag.Title = "Edit " + Model.Title;
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>QuestionModels</legend>
+        @Html.HiddenFor(model => model.QuestionId)
+        @Html.HiddenFor(model => model.Date)
+        @Html.HiddenFor(model => model.User)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Text)
+        </div>
+        <div class="editor-field">
+            @Html.TextArea("Text")
+            @Html.ValidationMessageFor(model => model.Text)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Category")
+        </div>
+           <div class="editor-field">
+            @Html.DropDownListFor(m => m.Major.MajorId, ViewBag.Cat as IEnumerable<SelectListItem>, new { @onchange = "document.getElementById('Major_MajorType').value=(this.selectedOptions[0].text);" })
+            @Html.HiddenFor(m => m.Major.MajorType)
+            @Html.ValidationMessageFor(model => model.Major.MajorId)
+          </div>
+
+        <div class="editor-label">
+            @Html.Label("Type")
+        </div>
+        <div class="editor-field">
+            @Html.RadioButton("Type", "Free", Model.ReferredUser == null, new
+       {
+           style = "margin-left:10px;width:auto",
+           @onclick = "document.getElementById('topuser').style.display='none';document.getElementById('ChoosenUserId').checked=false;"
+       }) Free
+            @Html.RadioButton("Type", "Paid", Model.ReferredUser != null, new
+       {
+           style = "margin-left:10px;width:auto",
+           @onclick = "if(document.getElementById('ChoosenUserId')==null||!document.getElementById('ChoosenUserId').checked)this.form.submit();"
+       }) Paid
+        </div>
+
+        <div id="topuser" style="display:@(ViewBag.Users != null ? "block" : "none")">
+             <table style="text-align:center">
+            <tr><td></td><td>User Name</td><td>Name</td><td>Rate</td><td>Price Per Question</td></tr>
+            @if (ViewBag.Users != null)
+            {
+                foreach (Answer.Models.UserProfile item in ViewBag.Users)
+                {
+                    <tr>
+                        <td>@Html.RadioButton("ChoosenUserId", item.UserId, item == Model.ReferredUser)</td>
+                        <td>@item.UserName</td>
+                        <td>@item.FirstName @item.LastName</td>
+                        <td>@item.Rate</td>
+                        <td>@item.Salary$</td>
+                    </tr>
+                }
+            }
+             </table>
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

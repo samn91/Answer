@@ -1,0 +1,20 @@
+﻿@model Answer.Models.AnswerModels
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<div>
+@using (Html.BeginForm("CreateAnswer", "MangeQuestions"))
+{
+    @Html.ValidationSummary(true)
+
+        @Html.Hidden("QId",Model.Question.QuestionId)
+
+        @Html.ValidationMessageFor(model => model.AnswerText)
+         <br />
+        @Html.TextAreaFor(model => model.AnswerText)
+         <br />
+        <input type="submit" value="Answer" />
+}
+</div>
+

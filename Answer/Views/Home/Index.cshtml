@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div style="/*float:right*/">
+     @using (@Html.BeginForm("Search", "Question"))
+     {
+       @Html.Label("Search for Question") @Html.TextBox("Search")  
+        <input class="" type="submit" value="Search" />
+     }
+</div> 
+
+<div style="background-color:rgb(223, 223, 223);text-align:center;box-shadow: 0 0 5px black;border-radius: 25px;padding:10px;margin:10px">
+   <h2 style="margin:2px"> More Than @ViewBag.unum <span  style="color:gray">Users.</span></h2>
+   <h2 style="margin:2px">  More Than @ViewBag.qnum  <span style="color:red">Questions</span> Been Asked.</h2> 
+   <h2 style="margin:2px">  More Than @ViewBag.anum <span style="color:green">Answers</span> Been Replyed for Defferent Questions.</h2> 
+
+    @{
+        if(User.Identity.IsAuthenticated){
+            <h3>Welcome <span style="color:blue"> @User.Identity.Name.</span></h3>
+        }
+        else{
+            <h3>Be Part of It  @Html.ActionLink("Register", "Register","Account").</h3>
+        }
+    }
+</div>
+
+
+
+<h2 style="margin:0 25%">Get Paid by Answering Others Questions</h2>
+
+<h3>We suggest the following:</h3>
+<ol class="round">
+    <li class="one">
+        <h5>Register To The Website</h5>
+       Register with your basic information.
+
+    </li>
+
+    <li class="two">
+        <h5>Post Questions</h5>
+        You can choose whom do you want to answer your question for money. Or you can make it open and let anyone to answer for free.
+    </li>
+
+    <li class="three">
+        <h5>Answer Other Questions</h5>
+        If the Question was diracted to you we will be paid after answering the quetion.
+    </li>
+</ol>

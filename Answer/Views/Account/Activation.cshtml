@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Activation";
+}
+
+<h2>Activation</h2>
+<h3>Please enter the activation code that been sent to your email</h3>
+
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+     @Html.AntiForgeryToken()
+
+@Html.TextBox("activatecode")
+@Html.ValidationMessage("activatecode")
+
+    <br />
+<input type="submit" value="Activate"/>
+    
+    <span style="color:red;font-size:large"> @ViewBag.Mess</span>
+
+}

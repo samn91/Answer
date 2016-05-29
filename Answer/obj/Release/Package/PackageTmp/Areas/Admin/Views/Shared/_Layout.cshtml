@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        <script type="text/javascript">
+            var i = 0;
+            function change()
+            {
+                if (i == 5)
+                    i = 0;
+                document.getElementById('logo').src = "/Logo4/Q&A Logo" + i++ + ".PNG";
+            }
+            setInterval("change()", 1000);
+        </script>
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                   <a style="background-color:inherit;" href="~/Home/Index"> <img id="logo" src="~/Q&A Logo.PNG" alt="Logo" width="180px" height="50px"/></a>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Website", "Index", "Home", new { Area = "" }, new{})</li>
+                            <li>@Html.ActionLink("DB Mange", "Index", "DB")</li>
+                            <li>@Html.ActionLink("Users", "Index", "MangeUsers")</li>
+                             <li>@Html.ActionLink("Questions", "Index", "MangeQuestions")</li>
+                            <li>@Html.ActionLink("Answers", "Index", "MangeAnswers")</li>
+                            <li>@Html.ActionLink("Majors", "Index", "MangeMajors")</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Q & A</p>
+                </div>
+            </div>
+        </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

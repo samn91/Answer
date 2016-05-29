@@ -1,0 +1,88 @@
+﻿@model Answer.Models.UserProfile
+
+@{
+    ViewBag.Title = "Account Informations";
+}
+
+<h2>@Model.FirstName @Model.LastName</h2>
+
+<fieldset style="border:groove;padding:5px;margin:5px">
+    <legend style="display:block">Information</legend>
+    <table style="margin:1px">
+        <tr><td>User Name</td><td>@Model.UserName</td></tr>
+        <tr><td>Email Address</td><td>@Model.Email</td></tr>
+        <tr><td>BirthDate</td><td>@Model.BirthDate.ToString("dd/MM/yyyy")</td></tr>
+        <tr><td>Country</td><td>@Model.City, @Model.Country</td></tr>
+        <tr><td>Major</td><td>@Model.Major.MajorType</td></tr>
+        <tr><td>Rate</td><td>@Model.Rate</td></tr>
+        <tr><td>Balance</td><td>@Model.Balance</td></tr>
+        <tr><td>Salary</td><td>@Model.Salary</td></tr>
+    </table>
+</fieldset>
+
+<fieldset style="border:groove;padding:5px;margin:5px">
+    <legend style="display:block">Paid Questions for @Model.UserName</legend>
+    @foreach (Answer.Models.QuestionModels item in Model.RefferdQuestions)
+    {
+       <div style="border:solid 1px gray;margin-bottom:20px;min-height:50px;padding:5px;background-color:white">
+          @item.Title
+           <div style="float:right;bottom:1px;padding:5px;margin:5px;border:solid 1px gray;text-align:center">
+               <div>
+                By @item.User.UserName
+                Posted On @item.Date.ToString("dd/MM/yyyy")
+                Rate: @item.Rate /10
+                @item.Views Views
+               Catogroy: @item.Major.MajorType
+                </div>
+           </div>
+           <div style="float:right;bottom:1px;padding:5px;margin:5px;">
+            @Html.ActionLink("Details", "Details","Question", new { id=item.QuestionId },null)  
+            </div>
+           </div>
+   }
+</fieldset>
+
+<fieldset style="border:groove;padding:5px;margin:5px">
+    <legend style="display:block">Questions by @Model.UserName</legend>
+    @foreach (var item in Model.Questions) {
+       <div style="border:solid 1px gray;margin-bottom:20px;min-height:50px;padding:5px;background-color:white">
+           @item.Title
+               <div style="float:right;bottom:1px;padding:5px;margin:5px;border:solid 1px gray;text-align:center">
+                   <div>
+                    Posted On @Html.DisplayFor(modelItem => item.Date)
+                    Rate: @Html.DisplayFor(modelItem => item.Rate)
+                    @Html.DisplayFor(modelItem => item.Views) Views
+                   Catogroy: @Html.DisplayFor(modelItem => item.Major.MajorType)
+                    </div>
+               </div>
+               <div style="float:right;bottom:1px;padding:5px;margin:5px;">
+                     @Html.ActionLink("Details", "Details","Question", new { id=item.QuestionId },null)  
+               </div>
+        </div>
+   }
+
+</fieldset>
+
+<fieldset style="border:groove;padding:5px;margin:5px">
+    <legend style="display:block">Answers by @Model.UserName</legend>
+    @foreach (var item in Model.Answers)
+    {
+       <div style="border:solid 1px gray;margin-bottom:20px;min-height:50px;padding:5px;background-color:white">
+           @item.AnswerText
+               <div style="float:right;bottom:1px;padding:5px;margin:5px;border:solid 1px gray;text-align:center">
+                   <div>
+                    Posted On @Html.DisplayFor(modelItem => item.Date)
+                    Rate: @Html.DisplayFor(modelItem => item.Rate)
+                    </div>
+               </div>
+               <div style="float:right;bottom:1px;padding:5px;margin:5px;">
+                  Question:@Html.ActionLink(item.Question.Title, "Details","Question", new { id=item.Question.QuestionId },null)  
+               </div>
+        </div>
+   }
+
+</fieldset>
+
+<p>
+    @Html.ActionLink("Edit Information", "Edit", new  {id=Model.UserId }) 
+</p>

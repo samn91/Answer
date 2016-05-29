@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<article>
+
+    <p>
+        Q & A is website to post questions and let other answer it.
+    </p>
+
+    <p>
+        If question was directed to you, you will be paid after answering the question.
+    </p>
+</article>
+
+<aside>
+  
+    <p>
+         <img id="logo" src="~/Logo.png" />
+    </p>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+</aside>

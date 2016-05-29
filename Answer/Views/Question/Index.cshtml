@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Answer.Models.QuestionModels>
+@{
+    ViewBag.Title = "Questions";
+}
+<div style="float:right;">
+     @using (@Html.BeginForm("Index", "Question"))
+     {
+        <span style="font-size:large;"> Category </span> @Html.DropDownList("MajorId", ViewBag.Cat as IEnumerable<SelectListItem>, new {@onchange="this.form.submit();" }) 
+     }
+</div>
+<div>
+     @using (@Html.BeginForm("Search", "Question"))
+     {
+        @Html.TextBox("Search")  
+        <input class="" type="submit" value="Search" />
+     }
+</div> 
+
+ <div style="margin:5px 0">
+   @foreach (var item in Model)
+   {
+       <div style="box-shadow:0px 1px 5px black;border-radius: 2px 2px 2px 2px;margin-bottom:20px;padding:3px;position:relative;min-height: 150px;background-color:white">
+           <div style="font-size:x-large;border-bottom:solid 1px black;margin:5px 10%;text-align:center;">@Html.ActionLink(item.Title, "Details", new { id = item.QuestionId }, new { style = "text-decoration: blink;" })   </div>
+            @Html.DisplayFor(modelItem => item.Text)
+           <div style="position:absolute;bottom:0px;right:0px;padding:15px;border: solid 4px rgb(170, 170, 170);box-shadow:inset 0px 0px 7px black;border-radius: 5px 5px 5px 5px;margin:2px;background-color:#F7F5F7;text-align:center">
+               <div>
+                By @Html.DisplayFor(modelItem => item.User.UserName) 
+                Posted On @Html.DisplayFor(modelItem => item.Date)
+                </div>
+                <div>
+                Rate: @Html.DisplayFor(modelItem => item.Rate)
+                @Html.DisplayFor(modelItem => item.Views) Views
+               Catogroy: @Html.DisplayFor(modelItem => item.Major.MajorType)
+                </div>
+           </div>
+           <div style="float:right;bottom:1px;padding:5px;margin:5px;">
+            @Html.ActionLink("Details", "Details", new { id = item.QuestionId })  
+            @if (User.Identity.Name == item.User.UserName)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.QuestionId }); 
+                @Html.ActionLink("Delete", "Delete", new { id = item.QuestionId });
+            }
+            </div>
+           </div>
+   }
+</div>
+
+<p>
+    @if (!ViewBag.IsCat)
+    {
+      int size = ViewBag.pages;
+      var x=ViewContext.RouteData.Values["id"];
+      if(x==null)
+      { x = 1; }
+        int page=Convert.ToInt32(x.ToString());
+        for (int i = 1; i <= size; i++)
+        {
+            <span style="@(page==i?"font-size: xx-large;":"font-size: x-large;")">
+            @*@Html.ActionLink(i.ToString(), "Index/" + i, "Question", new { style="text-decoration: blink;" })*@
+                <a href="~/Question/Index/@i" style="text-decoration: none;">@i</a>
+            </span>
+        }
+    }
+</p>
